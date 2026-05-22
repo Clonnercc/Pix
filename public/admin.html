@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Painel Admin</h1>
+
+<div class="card">
+  <input type="number" id="amount" placeholder="Valor">
+  <input type="text" id="customer" placeholder="Nome cliente">
+
+  <button onclick="createPayment()">
+    Criar cobrança PIX
+  </button>
+</div>
+
+<div id="result"></div>
+
+<script>
+async function createPayment() {
+  const amount = document.getElementById('amount').value;
+  const customer = document.getElementById('customer').value;
+
+  const req = await fetch('/create-payment', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ amount, customer })
+  });
+
+  const data = await req.json();
+
+  document.getElementById('result').innerHTML = `
+    <div class="card">
+      <h2>Pagamento criado</h2>
+
+      <img src="${data.qrCode}">
+
+      <p>${data.pixCode}</p>
+
+      <a href="${data.link}" target="_blank">
+        Abrir página
+      </a>
+    </div>
+  `;
+}
+</script>
+
+</body>
+</html>
