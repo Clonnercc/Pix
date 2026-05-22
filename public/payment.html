@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pagamento PIX</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="content"></div>
+
+<script>
+const params = new URLSearchParams(location.search);
+const id = params.get('id');
+
+async function loadPayment() {
+  const req = await fetch(`/payment/${id}`);
+  const data = await req.json();
+
+  document.getElementById('content').innerHTML = `
+    <div class="card">
+      <h1>Pagamento PIX</h1>
+
+      <img src="${data.qrCode}">
+
+      <p>Status: ${data.status}</p>
+
+      <textarea style="width:100%;height:120px">
+${data.pixCode}
+      </textarea>
+    </div>
+  `;
+}
+
+loadPayment();
+setInterval(loadPayment, 5000);
+</script>
+
+</body>
+</html>
