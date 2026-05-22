@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="card">
+    <h2>Login Admin</h2>
+
+    <input type="text" id="user" placeholder="Usuário">
+    <input type="password" id="pass" placeholder="Senha">
+
+    <button onclick="login()">Entrar</button>
+  </div>
+
+<script>
+async function login() {
+  const user = document.getElementById('user').value;
+  const pass = document.getElementById('pass').value;
+
+  const req = await fetch('/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ user, pass })
+  });
+
+  if(req.ok){
+    location.href = '/admin.html';
+  } else {
+    alert('Login inválido');
+  }
+}
+</script>
+</body>
+</html>
